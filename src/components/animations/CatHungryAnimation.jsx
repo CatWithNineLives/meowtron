@@ -1,16 +1,21 @@
-import { useSpriteAnimation } from '../../hooks/useSpriteAnimation';
-import fallbackCat from '../../assets/cats/sprites/cat-idle.png';
+import { useMultiSpriteAnimation } from '../../hooks/useMultiSpriteAnimation';
+import catCrying from '../../assets/cats/sprites/sad/cat-crying.png';
+import catSad from '../../assets/cats/sprites/sad/cat-sad.png';
 
-// Placeholder: Replace with actual hungry sprite sheet when available
-const HUNGRY_SPRITE_SHEET = fallbackCat;
-const FRAME_COUNT = 10; // Using idle sprite sheet (320px wide / 32px per frame = 10 frames)
 const GLOW_COLOR = '#FF6EC7'; // Pink
 
-export function CatHungryAnimation({ frameCount = FRAME_COUNT, fps = 10 }) {
-  const { spriteStyle } = useSpriteAnimation({
-    spriteSheet: HUNGRY_SPRITE_SHEET,
-    frameCount,
+// Sprite sheet dimensions (32px per frame):
+// cat-crying.png: 128px wide / 32px per frame = 4 frames
+// cat-sad.png: 288px wide / 32px per frame = 9 frames
+const SPRITE_SHEETS = [catCrying, catSad];
+const FRAME_COUNTS = [4, 9];
+
+export function CatHungryAnimation({ fps = 10 }) {
+  const { spriteStyle } = useMultiSpriteAnimation({
+    spriteSheets: SPRITE_SHEETS,
+    frameCounts: FRAME_COUNTS,
     fps,
+    random: true, // Randomly cycle through hungry/sad animations
   });
 
   return (
