@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { usePetStats } from './hooks/usePetStats';
 import { PetDisplay } from './components/PetDisplay';
 import { StatsDisplay } from './components/StatsDisplay';
@@ -8,6 +9,21 @@ import './App.css';
 export default function App() {
   const { stats, performAction, resetStats } = usePetStats();
   const currentMood = determineMood(stats);
+  const [debugMood, setDebugMood] = useState('idle');
+
+  const moods = ['idle', 'happy', 'hungry', 'sleepy', 'angry'];
+
+  // Create mock stats for debug display based on selected mood
+  const getDebugStats = (mood) => {
+    const mockStats = {
+      idle: { hunger: 50, happiness: 50, energy: 50 },
+      happy: { hunger: 80, happiness: 80, energy: 80 },
+      hungry: { hunger: 20, happiness: 50, energy: 50 },
+      sleepy: { hunger: 50, happiness: 50, energy: 20 },
+      angry: { hunger: 50, happiness: 20, energy: 50 },
+    };
+    return mockStats[mood] || mockStats.idle;
+  };
 
   return (
     <div className="app-container">
@@ -29,9 +45,38 @@ export default function App() {
           <button className="reset-button" onClick={resetStats} aria-label="Reset pet">
             🔄 Reset
           </button>
-          <div className="debug-mood" style={{ marginTop: '10px', fontSize: '0.8em', color: '#FF6EC7', textAlign: 'center' }}>
-            Mood: {currentMood}
-          </div>
+        </div>
+
+        <div className="mood-footnote">
+          Mood: <span className="mood-value">{currentMood}</span>
+        </div>
+      </div>
+
+      <div className="debug-section">
+        <div className="debug-header">
+          <h3 className="debug-title">Debug Mode</h3>
+        </div>
+
+        <div className="debug-controls">
+          <label htmlFor="mood-select" className="debug-label">
+            Select Mood:
+          </label>
+          <select
+            id="mood-select"
+            className="debug-select"
+            value={debugMood}
+            onChange={(e) => setDebugMood(e.target.value)}
+          >
+            {moods.map((mood) => (
+              <option key={mood} value={mood}>
+                {mood.charAt(0).toUpperCase() + mood.slice(1)}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="debug-pet-section">
+          <PetDisplay stats={getDebugStats(debugMood)} />
         </div>
       </div>
     </div>
