@@ -5,6 +5,8 @@ import { CatHappyAnimation } from './animations/CatHappyAnimation';
 import { CatHungryAnimation } from './animations/CatHungryAnimation';
 import { CatSleepyAnimation } from './animations/CatSleepyAnimation';
 import { CatAngryAnimation } from './animations/CatAngryAnimation';
+import { CatCriticalAnimation } from './animations/CatCriticalAnimation';
+import { CatDeadAnimation } from './animations/CatDeadAnimation';
 import { CatEatingAnimation } from './animations/CatEatingAnimation';
 import { CatDancingAnimation } from './animations/CatDancingAnimation';
 import { CatSleepingAnimation } from './animations/CatSleepingAnimation';
@@ -61,6 +63,10 @@ export function PetDisplay({ stats, currentAction = null }) {
   // Render mood animation
   const renderMoodAnimation = () => {
     switch (mood) {
+      case 'dead':
+        return <CatDeadAnimation />;
+      case 'critical':
+        return <CatCriticalAnimation />;
       case 'happy':
         return <CatHappyAnimation />;
       case 'hungry':

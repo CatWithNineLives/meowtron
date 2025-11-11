@@ -1,16 +1,23 @@
-import { useSpriteAnimation } from '../../hooks/useSpriteAnimation';
-import fallbackCat from '../../assets/cats/sprites/cat-idle.png';
+import { useMultiSpriteAnimation } from '../../hooks/useMultiSpriteAnimation';
+import catExcited from '../../assets/cats/sprites/happy/cat-excited.png';
+import catPlaying from '../../assets/cats/sprites/happy/cat-playing.png';
+import catSurprised from '../../assets/cats/sprites/happy/cat-surprised.png';
 
-// Placeholder: Replace with actual happy sprite sheet when available
-const HAPPY_SPRITE_SHEET = fallbackCat;
-const FRAME_COUNT = 10; // Using idle sprite sheet (320px wide / 32px per frame = 10 frames)
 const GLOW_COLOR = '#00FFF7'; // Cyan
 
-export function CatHappyAnimation({ frameCount = FRAME_COUNT, fps = 10 }) {
-  const { spriteStyle } = useSpriteAnimation({
-    spriteSheet: HAPPY_SPRITE_SHEET,
-    frameCount,
+// Sprite sheet dimensions (384px = 12 frames, 128px = 4 frames, 32px per frame):
+// cat-excited.png: 384px wide / 32px per frame = 12 frames
+// cat-playing.png: 128px wide / 32px per frame = 4 frames
+// cat-surprised.png: 384px wide / 32px per frame = 12 frames
+const SPRITE_SHEETS = [catExcited, catPlaying, catSurprised];
+const FRAME_COUNTS = [12, 4, 12];
+
+export function CatHappyAnimation({ fps = 10 }) {
+  const { spriteStyle } = useMultiSpriteAnimation({
+    spriteSheets: SPRITE_SHEETS,
+    frameCounts: FRAME_COUNTS,
     fps,
+    random: true, // Randomly cycle through happy animations
   });
 
   return (

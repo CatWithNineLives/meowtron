@@ -15,35 +15,45 @@ export function clamp(value, min = 0, max = 100) {
 
 /**
  * Determines the cat's mood based on stat levels
- * Priority: Angry > Hungry > Sleepy > Happy > Idle
+ * Priority: Dead > Critical > Angry > Hungry > Sleepy > Happy > Idle
  * @param {Object} stats - Pet stats object
  * @param {number} stats.hunger - Hunger stat (0-100)
  * @param {number} stats.happiness - Happiness stat (0-100)
  * @param {number} stats.energy - Energy stat (0-100)
- * @returns {string} Mood name: 'angry' | 'hungry' | 'sleepy' | 'happy' | 'idle'
+ * @returns {string} Mood name: 'dead' | 'critical' | 'angry' | 'hungry' | 'sleepy' | 'happy' | 'idle'
  */
 export function determineMood({ hunger, happiness, energy }) {
-  // Priority 1: Angry (highest priority - if Happiness < 30)
+  // Priority 1: Dead (if all stats are 0)
+  if (hunger === 0 && happiness === 0 && energy === 0) {
+    return "dead";
+  }
+
+  // Priority 2: Critical (if all stats are very low < 20)
+  if (hunger < 20 && happiness < 20 && energy < 20) {
+    return "critical";
+  }
+
+  // Priority 3: Angry (if Happiness < 30)
   if (happiness < 30) {
     return "angry";
   }
 
-  // Priority 2: Hungry (if Hunger < 30)
+  // Priority 4: Hungry (if Hunger < 30)
   if (hunger < 30) {
     return "hungry";
   }
 
-  // Priority 3: Sleepy (if Energy < 30)
+  // Priority 5: Sleepy (if Energy < 30)
   if (energy < 30) {
     return "sleepy";
   }
 
-  // Priority 4: Happy (if all stats > 70)
+  // Priority 6: Happy (if all stats > 70)
   if (hunger > 70 && happiness > 70 && energy > 70) {
     return "happy";
   }
 
-  // Priority 5: Idle (default - balanced stats in 40-70 range)
+  // Priority 7: Idle (default - balanced stats in 40-70 range)
   return "idle";
 }
 

@@ -30,7 +30,7 @@ export default function App() {
     }, durations[action] || 1000);
   };
 
-  const moods = ['idle', 'happy', 'hungry', 'sleepy', 'angry'];
+  const moods = ['idle', 'happy', 'hungry', 'sleepy', 'angry', 'critical', 'dead'];
 
   // Create mock stats for debug display based on selected mood
   const getDebugStats = (mood) => {
@@ -40,6 +40,8 @@ export default function App() {
       hungry: { hunger: 20, happiness: 50, energy: 50 },
       sleepy: { hunger: 50, happiness: 50, energy: 20 },
       angry: { hunger: 50, happiness: 20, energy: 50 },
+      critical: { hunger: 15, happiness: 15, energy: 15 },
+      dead: { hunger: 0, happiness: 0, energy: 0 },
     };
     return mockStats[mood] || mockStats.idle;
   };
