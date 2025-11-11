@@ -1,14 +1,11 @@
 /**
- * StatsDisplay component - Displays pet stats as progress bars
+ * StatsDisplay component - Displays pet stats as segmented retro progress bars
  * @param {Object} props
  * @param {Object} props.stats - Pet stats object
  */
 export function StatsDisplay({ stats }) {
-  const getStatColor = (value) => {
-    if (value >= 70) return '#00FF7F'; // Green
-    if (value >= 40) return '#FFD700'; // Yellow
-    return '#FF6B6B'; // Red
-  };
+  const SEGMENT_COUNT = 10; // Number of segments in the bar
+  const FILL_COLOR = '#FF6EC7'; // Pink color for filled segments
 
   const getStatLabel = (statName) => {
     const labels = {
@@ -28,27 +25,39 @@ export function StatsDisplay({ stats }) {
     return emojis[statName] || '📊';
   };
 
+  const getFilledSegments = (value) => {
+    // Calculate how many segments should be filled (0-10)
+    return Math.round((value / 100) * SEGMENT_COUNT);
+  };
+
   return (
     <div className="stats-display">
-      {Object.entries(stats).map(([statName, value]) => (
-        <div key={statName} className="stat-bar-container">
-          <div className="stat-label">
-            <span className="stat-emoji">{getStatEmoji(statName)}</span>
-            <span className="stat-name">{getStatLabel(statName)}</span>
-            <span className="stat-value">{Math.round(value)}</span>
+      {Object.entries(stats).map(([statName, value]) => {
+        const filledSegments = getFilledSegments(value);
+
+        return (
+          <div key={statName} className="stat-bar-container">
+            <div className="stat-label">
+              <span className="stat-emoji">{getStatEmoji(statName)}</span>
+              <span className="stat-name">{getStatLabel(statName)}</span>
+              <span className="stat-value">{Math.round(value)}</span>
+            </div>
+            <div className="stat-bar-wrapper">
+              <div className="stat-segments">
+                {Array.from({ length: SEGMENT_COUNT }, (_, index) => (
+                  <div
+                    key={index}
+                    className={`stat-segment ${index < filledSegments ? 'filled' : 'empty'}`}
+                    style={{
+                      backgroundColor: index < filledSegments ? FILL_COLOR : 'transparent',
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
           </div>
-          <div className="stat-bar-wrapper">
-            <div
-              className="stat-bar"
-              style={{
-                width: `${value}%`,
-                backgroundColor: getStatColor(value),
-                transition: 'width 0.3s ease, background-color 0.3s ease',
-              }}
-            />
-          </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }

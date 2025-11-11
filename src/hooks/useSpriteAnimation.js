@@ -17,6 +17,7 @@ export function useSpriteAnimation({
 }) {
   const [currentFrame, setCurrentFrame] = useState(0);
   const [spriteSheetWidth, setSpriteSheetWidth] = useState(0);
+  const [spriteSheetHeight, setSpriteSheetHeight] = useState(0);
   const frameIntervalRef = useRef(null);
 
   // Load sprite sheet to get dimensions
@@ -25,6 +26,7 @@ export function useSpriteAnimation({
     img.src = spriteSheet;
     img.onload = () => {
       setSpriteSheetWidth(img.width);
+      setSpriteSheetHeight(img.height);
     };
     img.onerror = () => {
       console.warn("Failed to load sprite sheet:", spriteSheet);
@@ -50,19 +52,31 @@ export function useSpriteAnimation({
 
   // Calculate frame width
   const calculatedFrameWidth =
-    frameWidth || (spriteSheetWidth > 0 ? spriteSheetWidth / frameCount : 180);
+    frameWidth || (spriteSheetWidth > 0 ? spriteSheetWidth / frameCount : 32);
+
+  // Scale factor for better visibility (4x for 32px sprites)
+  const scale = 4;
+  const scaledFrameWidth = calculatedFrameWidth * scale;
+  const scaledSpriteSheetWidth = spriteSheetWidth * scale;
+  const scaledSpriteSheetHeight = spriteSheetHeight * scale;
 
   // Generate sprite style
   const spriteStyle = {
-    width: calculatedFrameWidth > 0 ? `${calculatedFrameWidth}px` : "180px",
-    height: "auto",
+    width: scaledFrameWidth > 0 ? `${scaledFrameWidth}px` : "128px",
+    height:
+      scaledSpriteSheetHeight > 0 ? `${scaledSpriteSheetHeight}px` : "128px",
     backgroundImage: `url(${spriteSheet})`,
+    backgroundSize:
+      scaledSpriteSheetWidth > 0
+        ? `${scaledSpriteSheetWidth}px ${scaledSpriteSheetHeight}px`
+        : "auto",
     backgroundRepeat: "no-repeat",
     backgroundPosition:
       calculatedFrameWidth > 0
-        ? `-${currentFrame * calculatedFrameWidth}px 0`
+        ? `-${currentFrame * scaledFrameWidth}px 0`
         : "0 0",
     imageRendering: "pixelated",
+    display: "inline-block",
   };
 
   return {

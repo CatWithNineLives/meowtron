@@ -1,9 +1,9 @@
 import { useSpriteAnimation } from '../../hooks/useSpriteAnimation';
-import fallbackCat from '../../assets/meowtron-coming-soon.png';
+import fallbackCat from '../../assets/cats/sprites/cat-idle.png';
 
 // Placeholder: Replace with actual sleepy sprite sheet when available
 const SLEEPY_SPRITE_SHEET = fallbackCat;
-const FRAME_COUNT = 1; // Will be updated when sprite sheet is available
+const FRAME_COUNT = 10; // Using idle sprite sheet (320px wide / 32px per frame = 10 frames)
 const GLOW_COLOR = '#B266FF'; // Purple
 
 export function CatSleepyAnimation({ frameCount = FRAME_COUNT, fps = 10 }) {

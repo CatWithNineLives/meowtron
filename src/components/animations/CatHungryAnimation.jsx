@@ -1,9 +1,9 @@
 import { useSpriteAnimation } from '../../hooks/useSpriteAnimation';
-import fallbackCat from '../../assets/meowtron-coming-soon.png';
+import fallbackCat from '../../assets/cats/sprites/cat-idle.png';
 
 // Placeholder: Replace with actual hungry sprite sheet when available
 const HUNGRY_SPRITE_SHEET = fallbackCat;
-const FRAME_COUNT = 1; // Will be updated when sprite sheet is available
+const FRAME_COUNT = 10; // Using idle sprite sheet (320px wide / 32px per frame = 10 frames)
 const GLOW_COLOR = '#FF6EC7'; // Pink
 
 export function CatHungryAnimation({ frameCount = FRAME_COUNT, fps = 10 }) {

@@ -1,9 +1,8 @@
 import { useSpriteAnimation } from '../../hooks/useSpriteAnimation';
-import fallbackCat from '../../assets/meowtron-coming-soon.png';
+import catIdle from '../../assets/cats/sprites/cat-idle.png';
 
-// Placeholder: Replace with actual idle sprite sheet when available
-const IDLE_SPRITE_SHEET = fallbackCat;
-const FRAME_COUNT = 1; // Will be updated when sprite sheet is available
+const IDLE_SPRITE_SHEET = catIdle;
+const FRAME_COUNT = 10; // 320px wide / 32px per frame = 10 frames
 
 export function CatIdleAnimation({ frameCount = FRAME_COUNT, fps = 10 }) {
   const { spriteStyle } = useSpriteAnimation({
