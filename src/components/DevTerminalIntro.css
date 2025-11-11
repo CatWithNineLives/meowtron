@@ -1,0 +1,137 @@
+/* Terminal Intro Container */
+.dev-terminal-intro {
+  width: 100%;
+  max-width: 500px;
+  margin-top: 30px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Terminal Window */
+.terminal-window {
+  background: #0D0221;
+  border: 2px solid #FF6EC7;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(255, 110, 199, 0.3);
+}
+
+/* Terminal Header */
+.terminal-header {
+  background: linear-gradient(135deg, #1a0033 0%, #0D0221 100%);
+  border-bottom: 1px solid rgba(255, 110, 199, 0.3);
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.terminal-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.terminal-button {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.terminal-button-close {
+  background: #ff5f56;
+}
+
+.terminal-button-minimize {
+  background: #ffbd2e;
+}
+
+.terminal-button-maximize {
+  background: #27c93f;
+}
+
+.terminal-title {
+  color: rgba(255, 255, 255, 0.7);
+  font-family: 'Courier New', monospace;
+  font-size: 0.85em;
+  flex: 1;
+  text-align: center;
+}
+
+/* Terminal Body */
+.terminal-body {
+  padding: 20px;
+  min-height: 150px;
+  background: #0D0221;
+  font-family: 'Courier New', monospace;
+  font-size: 0.95em;
+  line-height: 1.6;
+  color: #00FFF7;
+  text-shadow: 0 0 5px rgba(0, 255, 247, 0.5);
+}
+
+.terminal-line {
+  margin-bottom: 8px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.terminal-cursor {
+  display: inline-block;
+  animation: blink 1s infinite;
+  margin-left: 2px;
+  color: #00FFF7;
+}
+
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+/* Fade out animation */
+.dev-terminal-intro.fade-out {
+  animation: fadeOut 0.5s ease-in-out forwards;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .dev-terminal-intro {
+    margin-top: 20px;
+  }
+
+  .terminal-body {
+    padding: 15px;
+    font-size: 0.85em;
+    min-height: 120px;
+  }
+
+  .terminal-header {
+    padding: 6px 10px;
+  }
+
+  .terminal-title {
+    font-size: 0.75em;
+  }
+}
+

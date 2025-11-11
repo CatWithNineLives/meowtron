@@ -4,6 +4,7 @@ import { PetDisplay } from './components/PetDisplay';
 import { StatsDisplay } from './components/StatsDisplay';
 import { ActionButtons } from './components/ActionButtons';
 import { CatLoveModal } from './components/CatLoveModal';
+import { DevTerminalIntro } from './components/DevTerminalIntro';
 import { determineMood } from './utils/petLogic';
 import './App.css';
 
@@ -17,12 +18,21 @@ export default function App() {
   const [catClickCount, setCatClickCount] = useState(0);
   const [showCatLoveModal, setShowCatLoveModal] = useState(false);
   const [showDevSection, setShowDevSection] = useState(false);
+  const [showTerminalIntro, setShowTerminalIntro] = useState(false);
+  const [showDevContent, setShowDevContent] = useState(false);
 
   // Check sessionStorage on mount
   useEffect(() => {
     const savedChoice = sessionStorage.getItem(SESSION_STORAGE_KEY);
     if (savedChoice === 'worship') {
       setShowDevSection(true);
+      // If already shown before, skip intro
+      const introShown = sessionStorage.getItem('meowtron_intro_shown');
+      if (introShown === 'true') {
+        setShowDevContent(true);
+      } else {
+        setShowTerminalIntro(true);
+      }
     }
   }, []);
 
@@ -67,6 +77,7 @@ export default function App() {
   const handleWorshipChoice = () => {
     sessionStorage.setItem(SESSION_STORAGE_KEY, 'worship');
     setShowDevSection(true);
+    setShowTerminalIntro(true);
 
     // Scroll to dev section after a brief delay to ensure it's rendered
     setTimeout(() => {
@@ -75,6 +86,13 @@ export default function App() {
         devSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     }, 100);
+  };
+
+  // Handle terminal intro completion
+  const handleTerminalIntroComplete = () => {
+    setShowTerminalIntro(false);
+    setShowDevContent(true);
+    sessionStorage.setItem('meowtron_intro_shown', 'true');
   };
 
   const moods = ['idle', 'happy', 'hungry', 'sleepy', 'angry', 'critical', 'dead'];
@@ -124,31 +142,39 @@ export default function App() {
 
       {showDevSection && (
         <div id="dev-meowtron-section" className="debug-section">
-          <div className="debug-header">
-            <h3 className="debug-title">/dev/meowtron</h3>
-          </div>
+          {showTerminalIntro && (
+            <DevTerminalIntro onComplete={handleTerminalIntroComplete} />
+          )}
 
-          <div className="debug-controls">
-            <label htmlFor="mood-select" className="debug-label">
-              Select Mood:
-            </label>
-            <select
-              id="mood-select"
-              className="debug-select"
-              value={debugMood}
-              onChange={(e) => setDebugMood(e.target.value)}
-            >
-              {moods.map((mood) => (
-                <option key={mood} value={mood}>
-                  {mood.charAt(0).toUpperCase() + mood.slice(1)}
-                </option>
-              ))}
-            </select>
-          </div>
+          {showDevContent && (
+            <div className="dev-content">
+              <div className="debug-header">
+                <h3 className="debug-title">/dev/meowtron</h3>
+              </div>
 
-          <div className="debug-pet-section">
-            <PetDisplay stats={getDebugStats(debugMood)} />
-          </div>
+              <div className="debug-controls">
+                <label htmlFor="mood-select" className="debug-label">
+                  Select Mood:
+                </label>
+                <select
+                  id="mood-select"
+                  className="debug-select"
+                  value={debugMood}
+                  onChange={(e) => setDebugMood(e.target.value)}
+                >
+                  {moods.map((mood) => (
+                    <option key={mood} value={mood}>
+                      {mood.charAt(0).toUpperCase() + mood.slice(1)}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="debug-pet-section">
+                <PetDisplay stats={getDebugStats(debugMood)} />
+              </div>
+            </div>
+          )}
         </div>
       )}
 
