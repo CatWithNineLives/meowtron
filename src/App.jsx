@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { usePetStats } from './hooks/usePetStats';
+import { usePetSounds } from './hooks/usePetSounds';
+import { useDevSounds } from './hooks/useDevSounds';
 import { PetDisplay } from './components/PetDisplay';
 import { StatsDisplay } from './components/StatsDisplay';
 import { ActionButtons } from './components/ActionButtons';
@@ -9,6 +11,8 @@ import { determineMood } from './utils/petLogic';
 import './App.css';
 
 const SESSION_STORAGE_KEY = 'meowtron_cat_love_choice';
+const SOUND_PREFERENCE_KEY = 'meowtron_sound_enabled';
+const DEV_SOUND_PREFERENCE_KEY = 'meowtron_dev_sound_enabled';
 
 export default function App() {
   const { stats, performAction, resetStats } = usePetStats();
@@ -20,6 +24,8 @@ export default function App() {
   const [showDevSection, setShowDevSection] = useState(false);
   const [showTerminalIntro, setShowTerminalIntro] = useState(false);
   const [showDevContent, setShowDevContent] = useState(false);
+  const [soundEnabled, setSoundEnabled] = useState(true);
+  const [devSoundEnabled, setDevSoundEnabled] = useState(true);
 
   // Check sessionStorage on mount
   useEffect(() => {
@@ -34,7 +40,39 @@ export default function App() {
         setShowTerminalIntro(true);
       }
     }
+
+    // Load sound preference
+    const savedSoundPreference = localStorage.getItem(SOUND_PREFERENCE_KEY);
+    if (savedSoundPreference !== null) {
+      setSoundEnabled(savedSoundPreference === 'true');
+    }
+
+    // Load dev sound preference
+    const savedDevSoundPreference = localStorage.getItem(DEV_SOUND_PREFERENCE_KEY);
+    if (savedDevSoundPreference !== null) {
+      setDevSoundEnabled(savedDevSoundPreference === 'true');
+    }
   }, []);
+
+  // Play sounds based on mood
+  usePetSounds(currentMood, soundEnabled);
+
+  // Play dev mode sounds
+  useDevSounds(showDevContent, devSoundEnabled);
+
+  // Toggle sound
+  const toggleSound = () => {
+    const newSoundState = !soundEnabled;
+    setSoundEnabled(newSoundState);
+    localStorage.setItem(SOUND_PREFERENCE_KEY, newSoundState.toString());
+  };
+
+  // Toggle dev sound
+  const toggleDevSound = () => {
+    const newDevSoundState = !devSoundEnabled;
+    setDevSoundEnabled(newDevSoundState);
+    localStorage.setItem(DEV_SOUND_PREFERENCE_KEY, newDevSoundState.toString());
+  };
 
   // Handle action with temporary animation display
   const handleAction = (action) => {
@@ -115,6 +153,14 @@ export default function App() {
     <div className="app-container">
       <h1 className="app-title">Meowtron</h1>
       <div className="game-frame">
+        <button
+          className="sound-toggle-button"
+          onClick={toggleSound}
+          aria-label={soundEnabled ? 'Mute sound' : 'Unmute sound'}
+          title={soundEnabled ? 'Mute sound' : 'Unmute sound'}
+        >
+          {soundEnabled ? '🔊' : '🔇'}
+        </button>
         <div className="pet-section">
           <PetDisplay stats={stats} currentAction={currentAction} onCatClick={handleCatClick} />
         </div>
@@ -148,6 +194,14 @@ export default function App() {
 
           {showDevContent && (
             <div className="dev-content">
+              <button
+                className="dev-sound-toggle-button"
+                onClick={toggleDevSound}
+                aria-label={devSoundEnabled ? 'Mute dev sound' : 'Unmute dev sound'}
+                title={devSoundEnabled ? 'Mute dev sound' : 'Unmute dev sound'}
+              >
+                {devSoundEnabled ? '🔊' : '🔇'}
+              </button>
               <div className="debug-header">
                 <h3 className="debug-title">/dev/meowtron</h3>
               </div>

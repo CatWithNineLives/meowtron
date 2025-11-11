@@ -25,6 +25,51 @@
   background: rgba(0, 0, 0, 0.3);
   box-shadow: 0 0 20px rgba(255, 110, 199, 0.3);
   animation: borderGlow 2s ease-in-out infinite alternate;
+  position: relative;
+}
+
+/* Sound Toggle Button */
+.sound-toggle-button {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 2px solid rgba(255, 110, 199, 0.5);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  min-height: 40px;
+}
+
+.sound-toggle-button:hover {
+  background: rgba(255, 110, 199, 0.2);
+  border-color: #FF6EC7;
+  box-shadow: 0 0 10px rgba(255, 110, 199, 0.5);
+  transform: scale(1.1);
+}
+
+.sound-toggle-button:active {
+  transform: scale(0.95);
+}
+
+/* Mobile Responsive - Sound Button */
+@media (max-width: 768px) {
+  .sound-toggle-button {
+    top: 10px;
+    right: 10px;
+    padding: 6px 10px;
+    font-size: 1em;
+    min-width: 36px;
+    min-height: 36px;
+  }
 }
 
 @keyframes borderGlow {
@@ -422,6 +467,39 @@
   background: rgba(0, 0, 0, 0.2);
   opacity: 0;
   animation: fadeInContent 0.5s ease-in-out forwards;
+  position: relative;
+}
+
+/* Dev Sound Toggle Button */
+.dev-sound-toggle-button {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 2px solid rgba(255, 110, 199, 0.5);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  min-height: 40px;
+}
+
+.dev-sound-toggle-button:hover {
+  background: rgba(255, 110, 199, 0.2);
+  border-color: #FF6EC7;
+  box-shadow: 0 0 10px rgba(255, 110, 199, 0.5);
+  transform: scale(1.1);
+}
+
+.dev-sound-toggle-button:active {
+  transform: scale(0.95);
 }
 
 @keyframes fadeInContent {
@@ -433,10 +511,6 @@
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-.dev-content.fade-in {
-  opacity: 1;
 }
 
 .debug-header {
@@ -516,6 +590,15 @@
   .debug-section {
     margin-top: 20px;
     padding: 15px;
+  }
+
+  .dev-sound-toggle-button {
+    top: 10px;
+    right: 10px;
+    padding: 6px 10px;
+    font-size: 1em;
+    min-width: 36px;
+    min-height: 36px;
   }
 
   .debug-header {
