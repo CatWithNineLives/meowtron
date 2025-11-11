@@ -12,7 +12,7 @@ const GLOW_COLOR = '#00FFF7'; // Cyan
 const SPRITE_SHEETS = [catExcited, catPlaying, catSurprised];
 const FRAME_COUNTS = [12, 4, 12];
 
-export function CatHappyAnimation({ fps = 10 }) {
+export function CatHappyAnimation({ fps = 3 }) {
   const { spriteStyle } = useMultiSpriteAnimation({
     spriteSheets: SPRITE_SHEETS,
     frameCounts: FRAME_COUNTS,

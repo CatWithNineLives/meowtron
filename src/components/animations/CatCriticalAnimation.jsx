@@ -10,7 +10,7 @@ const GLOW_COLOR = '#FF0000'; // Bright red
 const SPRITE_SHEETS = [catCritical, catSick];
 const FRAME_COUNTS = [5, 4];
 
-export function CatCriticalAnimation({ fps = 10 }) {
+export function CatCriticalAnimation({ fps = 3 }) {
   const { spriteStyle } = useMultiSpriteAnimation({
     spriteSheets: SPRITE_SHEETS,
     frameCounts: FRAME_COUNTS,

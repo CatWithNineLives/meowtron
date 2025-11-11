@@ -5,7 +5,7 @@ import catEating from '../../assets/cats/sprites/cat-eating.png';
 const FRAME_COUNT = 15;
 const GLOW_COLOR = '#FF6EC7'; // Pink
 
-export function CatEatingAnimation({ fps = 10 }) {
+export function CatEatingAnimation({ fps = 3 }) {
   const { spriteStyle } = useSpriteAnimation({
     spriteSheet: catEating,
     frameCount: FRAME_COUNT,

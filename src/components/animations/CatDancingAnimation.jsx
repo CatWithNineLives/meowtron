@@ -5,7 +5,7 @@ import catDancing from '../../assets/cats/sprites/cat-dancing.png';
 const FRAME_COUNT = 4;
 const GLOW_COLOR = '#00FFF7'; // Cyan
 
-export function CatDancingAnimation({ fps = 10 }) {
+export function CatDancingAnimation({ fps = 3 }) {
   const { spriteStyle } = useSpriteAnimation({
     spriteSheet: catDancing,
     frameCount: FRAME_COUNT,

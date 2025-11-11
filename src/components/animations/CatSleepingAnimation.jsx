@@ -5,7 +5,7 @@ import catSleeping from '../../assets/cats/sprites/cat-sleeping.png';
 const FRAME_COUNT = 4;
 const GLOW_COLOR = '#B266FF'; // Purple
 
-export function CatSleepingAnimation({ fps = 10 }) {
+export function CatSleepingAnimation({ fps = 3 }) {
   const { spriteStyle } = useSpriteAnimation({
     spriteSheet: catSleeping,
     frameCount: FRAME_COUNT,

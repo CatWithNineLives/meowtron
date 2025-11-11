@@ -8,7 +8,7 @@ const GLOW_COLOR = '#FF4D4D'; // Red
 const ANGRY_SPRITE_SHEET = catSick;
 const FRAME_COUNT = 4; // 128px wide / 32px per frame = 4 frames
 
-export function CatAngryAnimation({ fps = 10 }) {
+export function CatAngryAnimation({ fps = 3 }) {
   const { spriteStyle } = useSpriteAnimation({
     spriteSheet: ANGRY_SPRITE_SHEET,
     frameCount: FRAME_COUNT,

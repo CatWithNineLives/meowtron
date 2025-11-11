@@ -10,7 +10,7 @@ const GLOW_COLOR = '#FF6EC7'; // Pink
 const SPRITE_SHEETS = [catCrying, catSad];
 const FRAME_COUNTS = [4, 9];
 
-export function CatHungryAnimation({ fps = 10 }) {
+export function CatHungryAnimation({ fps = 3 }) {
   const { spriteStyle } = useMultiSpriteAnimation({
     spriteSheets: SPRITE_SHEETS,
     frameCounts: FRAME_COUNTS,

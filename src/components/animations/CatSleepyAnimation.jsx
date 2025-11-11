@@ -11,7 +11,7 @@ const GLOW_COLOR = '#B266FF'; // Purple
 const SPRITE_SHEETS = [catSleepy, catTired];
 const FRAME_COUNTS = [8, 12];
 
-export function CatSleepyAnimation({ fps = 10 }) {
+export function CatSleepyAnimation({ fps = 3 }) {
   const { spriteStyle } = useMultiSpriteAnimation({
     spriteSheets: SPRITE_SHEETS,
     frameCounts: FRAME_COUNTS,
