@@ -1,21 +1,18 @@
-import { useMultiSpriteAnimation } from '../../hooks/useMultiSpriteAnimation';
-import catCrying from '../../assets/cats/sprites/sad/cat-crying.png';
-import catSad from '../../assets/cats/sprites/sad/cat-sad.png';
+import { useSpriteAnimation } from '../../hooks/useSpriteAnimation';
+import catSick from '../../assets/cats/sprites/critical/cat-sick.png';
 
 const GLOW_COLOR = '#FF4D4D'; // Red
 
 // Sprite sheet dimensions (32px per frame):
-// cat-crying.png: 128px wide / 32px per frame = 4 frames
-// cat-sad.png: 288px wide / 32px per frame = 9 frames
-const SPRITE_SHEETS = [catCrying, catSad];
-const FRAME_COUNTS = [4, 9];
+// cat-sick.png: 128px wide / 32px per frame = 4 frames
+const ANGRY_SPRITE_SHEET = catSick;
+const FRAME_COUNT = 4; // 128px wide / 32px per frame = 4 frames
 
 export function CatAngryAnimation({ fps = 10 }) {
-  const { spriteStyle } = useMultiSpriteAnimation({
-    spriteSheets: SPRITE_SHEETS,
-    frameCounts: FRAME_COUNTS,
+  const { spriteStyle } = useSpriteAnimation({
+    spriteSheet: ANGRY_SPRITE_SHEET,
+    frameCount: FRAME_COUNT,
     fps,
-    random: true, // Randomly cycle through angry/sad animations
   });
 
   return (
