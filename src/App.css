@@ -3,29 +3,283 @@
   min-height: 100vh;
   width: 100vw;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   background: radial-gradient(circle at center, #0D0221 40%, #000 100%);
-  overflow: hidden;
+  overflow-x: hidden;
+  padding: 20px;
+  box-sizing: border-box;
+  color: #fff;
+  font-family: 'Courier New', monospace;
 }
 
-/* 🐱 Centered cat sprite */
-.cat-wrapper {
-  text-align: center;
+/* Header Section */
+.meowtron-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 20px;
+}
+
+.app-title {
+  font-size: 2.5em;
+  margin: 0;
+  text-shadow: 0 0 10px #00FFF7, 0 0 20px #00FFF7;
+  font-weight: bold;
+}
+
+.reset-button {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid #00FFF7;
+  color: #00FFF7;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+  transition: all 0.3s ease;
+  text-shadow: 0 0 5px #00FFF7;
+}
+
+.reset-button:hover {
+  background: rgba(0, 255, 247, 0.2);
+  box-shadow: 0 0 10px #00FFF7;
+  transform: scale(1.05);
+}
+
+.reset-button:active {
+  transform: scale(0.95);
+}
+
+/* Pet Display Section */
+.pet-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+  min-height: 200px;
   animation: fadeIn 1.5s ease-in-out;
 }
 
-.meowtron-cat {
-  width: 180px;
-  max-width: 60vw;
+.sprite-container {
+  display: inline-block;
   image-rendering: pixelated;
-  filter: drop-shadow(0 0 10px #00FFF7);
-  transition: transform 0.4s ease, filter 0.4s ease;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  transition: filter 0.3s ease-in-out, transform 0.3s ease;
 }
 
+.sprite-container:hover {
+  transform: scale(1.05);
+}
+
+/* Stats Display Section */
+.stats-section {
+  width: 100%;
+  max-width: 600px;
+  margin: 20px 0;
+}
+
+.stats-display {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.stat-bar-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.stat-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1em;
+  font-weight: bold;
+}
+
+.stat-emoji {
+  font-size: 1.2em;
+}
+
+.stat-name {
+  flex: 1;
+  text-transform: capitalize;
+}
+
+.stat-value {
+  min-width: 40px;
+  text-align: right;
+  font-family: 'Courier New', monospace;
+}
+
+.stat-bar-wrapper {
+  width: 100%;
+  height: 25px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.stat-bar {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.3s ease, background-color 0.3s ease;
+  box-shadow: 0 0 10px currentColor;
+}
+
+/* Action Buttons Section */
+.actions-section {
+  width: 100%;
+  max-width: 600px;
+  margin-top: 20px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.action-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 15px 25px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  color: #fff;
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+  font-size: 1em;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  min-width: 100px;
+  text-shadow: 0 0 5px currentColor;
+}
+
+.action-button:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 255, 247, 0.4);
+  border-color: #00FFF7;
+}
+
+.action-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.action-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.action-button.cooldown {
+  opacity: 0.6;
+}
+
+.action-emoji {
+  font-size: 2em;
+  filter: drop-shadow(0 0 5px currentColor);
+}
+
+.action-label {
+  font-size: 0.9em;
+}
+
+/* Mood-specific button colors */
+.action-button.feed {
+  border-color: #FF6EC7;
+}
+
+.action-button.feed:hover:not(:disabled) {
+  box-shadow: 0 5px 15px rgba(255, 110, 199, 0.4);
+  border-color: #FF6EC7;
+}
+
+.action-button.play {
+  border-color: #00FFF7;
+}
+
+.action-button.play:hover:not(:disabled) {
+  box-shadow: 0 5px 15px rgba(0, 255, 247, 0.4);
+  border-color: #00FFF7;
+}
+
+.action-button.sleep {
+  border-color: #B266FF;
+}
+
+.action-button.sleep:hover:not(:disabled) {
+  box-shadow: 0 5px 15px rgba(178, 102, 255, 0.4);
+  border-color: #B266FF;
+}
 
 /* 🌠 Fade in effect */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .app-container {
+    padding: 10px;
+  }
+
+  .app-title {
+    font-size: 2em;
+  }
+
+  .meowtron-header {
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+  }
+
+  .reset-button {
+    width: 100%;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .action-button {
+    width: 100%;
+  }
+
+  .pet-section {
+    min-height: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-title {
+    font-size: 1.5em;
+  }
+
+  .stat-label {
+    font-size: 0.9em;
+  }
+
+  .action-button {
+    padding: 12px 20px;
+    min-width: auto;
+  }
 }
