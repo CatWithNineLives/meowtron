@@ -1,6 +1,7 @@
 # 🐱 Meowtron
 
 A virtual pet (tamagotchi) web application built with React. Care for your digital cat by managing its hunger, happiness, and energy stats!
+Available on https://meowtron.catwithninelives.dev/
 
 ## Features
 
