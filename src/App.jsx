@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { usePetStats } from './hooks/usePetStats';
 import { usePetSounds } from './hooks/usePetSounds';
 import { useDevSounds } from './hooks/useDevSounds';
@@ -75,7 +75,7 @@ export default function App() {
   };
 
   // Handle action with temporary animation display
-  const handleAction = (action) => {
+  const handleAction = useCallback((action) => {
     performAction(action);
     setCurrentAction(action);
 
@@ -90,7 +90,49 @@ export default function App() {
     setTimeout(() => {
       setCurrentAction(null);
     }, durations[action] || 1000);
-  };
+  }, [performAction]);
+
+  // Keyboard shortcuts: F = Feed, P = Play, S = Sleep
+  useEffect(() => {
+    const handleKeyPress = (event) => {
+      // Don't trigger if user is typing in an input field
+      if (
+        event.target.tagName === 'INPUT' ||
+        event.target.tagName === 'TEXTAREA' ||
+        event.target.isContentEditable
+      ) {
+        return;
+      }
+
+      // Check for keyboard shortcuts (case-insensitive)
+      const key = event.key.toLowerCase();
+
+      switch (key) {
+        case 'f':
+          event.preventDefault();
+          handleAction('feed');
+          break;
+        case 'p':
+          event.preventDefault();
+          handleAction('play');
+          break;
+        case 's':
+          event.preventDefault();
+          handleAction('sleep');
+          break;
+        default:
+          break;
+      }
+    };
+
+    // Add event listener
+    window.addEventListener('keydown', handleKeyPress);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [handleAction]);
 
   // Handle cat sprite clicks
   const handleCatClick = () => {
