@@ -334,9 +334,29 @@
   opacity: 0.6;
 }
 
-.action-emoji {
-  font-size: 1.5em;
+.action-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+}
+
+.action-icon-image {
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
   filter: drop-shadow(0 0 5px currentColor);
+}
+
+.action-icon-toy {
+  width: 32px;
+  height: 32px;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
 }
 
 .action-label {
@@ -441,8 +461,9 @@
     font-size: 0.9em;
   }
 
-  .action-emoji {
-    font-size: 1.5em;
+  .action-icon {
+    width: 28px;
+    height: 28px;
   }
 
   .reset-button {

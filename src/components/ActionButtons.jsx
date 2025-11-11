@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import catFood from '../assets/cats/action/cat-food.png';
+import catSleep from '../assets/cats/action/cat-sleep.png';
+import { CatToyAnimation } from './animations/CatToyAnimation';
 
 /**
  * ActionButtons component - Provides Feed, Play, and Sleep actions
@@ -28,9 +31,9 @@ export function ActionButtons({ onAction }) {
   };
 
   const actions = [
-    { id: 'feed', label: 'Feed', emoji: '🍣' },
-    { id: 'play', label: 'Play', emoji: '💿' },
-    { id: 'sleep', label: 'Sleep', emoji: '🌙' },
+    { id: 'feed', label: 'Feed', image: catFood },
+    { id: 'play', label: 'Play', animated: true },
+    { id: 'sleep', label: 'Sleep', image: catSleep },
   ];
 
   return (
@@ -43,7 +46,17 @@ export function ActionButtons({ onAction }) {
           disabled={cooldowns[action.id]}
           aria-label={action.label}
         >
-          <span className="action-emoji">{action.emoji}</span>
+          <span className="action-icon">
+            {action.animated ? (
+              <CatToyAnimation />
+            ) : (
+              <img
+                src={action.image}
+                alt={action.label}
+                className="action-icon-image"
+              />
+            )}
+          </span>
           <span className="action-label">{action.label}</span>
         </button>
       ))}
