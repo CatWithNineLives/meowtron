@@ -1,16 +1,30 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { usePetStats } from './hooks/usePetStats';
 import { PetDisplay } from './components/PetDisplay';
 import { StatsDisplay } from './components/StatsDisplay';
 import { ActionButtons } from './components/ActionButtons';
+import { CatLoveModal } from './components/CatLoveModal';
 import { determineMood } from './utils/petLogic';
 import './App.css';
+
+const SESSION_STORAGE_KEY = 'meowtron_cat_love_choice';
 
 export default function App() {
   const { stats, performAction, resetStats } = usePetStats();
   const currentMood = determineMood(stats);
   const [debugMood, setDebugMood] = useState('idle');
   const [currentAction, setCurrentAction] = useState(null);
+  const [catClickCount, setCatClickCount] = useState(0);
+  const [showCatLoveModal, setShowCatLoveModal] = useState(false);
+  const [showDevSection, setShowDevSection] = useState(false);
+
+  // Check sessionStorage on mount
+  useEffect(() => {
+    const savedChoice = sessionStorage.getItem(SESSION_STORAGE_KEY);
+    if (savedChoice === 'worship') {
+      setShowDevSection(true);
+    }
+  }, []);
 
   // Handle action with temporary animation display
   const handleAction = (action) => {
@@ -28,6 +42,39 @@ export default function App() {
     setTimeout(() => {
       setCurrentAction(null);
     }, durations[action] || 1000);
+  };
+
+  // Handle cat sprite clicks
+  const handleCatClick = () => {
+    const newCount = catClickCount + 1;
+    setCatClickCount(newCount);
+
+    // Show modal after more than 5 clicks (6 or more) (only if user hasn't made a choice yet)
+    const savedChoice = sessionStorage.getItem(SESSION_STORAGE_KEY);
+    if (newCount > 5 && !savedChoice) {
+      setShowCatLoveModal(true);
+      setCatClickCount(0); // Reset count after showing modal
+    }
+  };
+
+  // Handle "Yes" choice - hide dev section permanently for this session
+  const handleYesChoice = () => {
+    sessionStorage.setItem(SESSION_STORAGE_KEY, 'yes');
+    setShowDevSection(false);
+  };
+
+  // Handle "I worship them" choice - show dev section and scroll to it
+  const handleWorshipChoice = () => {
+    sessionStorage.setItem(SESSION_STORAGE_KEY, 'worship');
+    setShowDevSection(true);
+
+    // Scroll to dev section after a brief delay to ensure it's rendered
+    setTimeout(() => {
+      const devSection = document.getElementById('dev-meowtron-section');
+      if (devSection) {
+        devSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
   };
 
   const moods = ['idle', 'happy', 'hungry', 'sleepy', 'angry', 'critical', 'dead'];
@@ -51,7 +98,7 @@ export default function App() {
       <h1 className="app-title">Meowtron</h1>
       <div className="game-frame">
         <div className="pet-section">
-          <PetDisplay stats={stats} currentAction={currentAction} />
+          <PetDisplay stats={stats} currentAction={currentAction} onCatClick={handleCatClick} />
         </div>
 
         <div className="stats-section">
@@ -68,38 +115,49 @@ export default function App() {
           </button>
         </div>
 
-        <div className="mood-footnote">
-          Mood: <span className="mood-value">{currentMood}</span>
-        </div>
+        {showDevSection && (
+          <div className="mood-footnote">
+            Mood: <span className="mood-value">{currentMood}</span>
+          </div>
+        )}
       </div>
 
-      <div className="debug-section">
-        <div className="debug-header">
-          <h3 className="debug-title">Debug Mode</h3>
-        </div>
+      {showDevSection && (
+        <div id="dev-meowtron-section" className="debug-section">
+          <div className="debug-header">
+            <h3 className="debug-title">/dev/meowtron</h3>
+          </div>
 
-        <div className="debug-controls">
-          <label htmlFor="mood-select" className="debug-label">
-            Select Mood:
-          </label>
-          <select
-            id="mood-select"
-            className="debug-select"
-            value={debugMood}
-            onChange={(e) => setDebugMood(e.target.value)}
-          >
-            {moods.map((mood) => (
-              <option key={mood} value={mood}>
-                {mood.charAt(0).toUpperCase() + mood.slice(1)}
-              </option>
-            ))}
-          </select>
-        </div>
+          <div className="debug-controls">
+            <label htmlFor="mood-select" className="debug-label">
+              Select Mood:
+            </label>
+            <select
+              id="mood-select"
+              className="debug-select"
+              value={debugMood}
+              onChange={(e) => setDebugMood(e.target.value)}
+            >
+              {moods.map((mood) => (
+                <option key={mood} value={mood}>
+                  {mood.charAt(0).toUpperCase() + mood.slice(1)}
+                </option>
+              ))}
+            </select>
+          </div>
 
-        <div className="debug-pet-section">
-          <PetDisplay stats={getDebugStats(debugMood)} />
+          <div className="debug-pet-section">
+            <PetDisplay stats={getDebugStats(debugMood)} />
+          </div>
         </div>
-      </div>
+      )}
+
+      <CatLoveModal
+        isOpen={showCatLoveModal}
+        onClose={() => setShowCatLoveModal(false)}
+        onYes={handleYesChoice}
+        onWorship={handleWorshipChoice}
+      />
     </div>
   );
 }

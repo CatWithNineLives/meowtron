@@ -17,8 +17,9 @@ import { CatSleepingAnimation } from './animations/CatSleepingAnimation';
  * @param {Object} props
  * @param {Object} props.stats - Pet stats object
  * @param {string} [props.currentAction] - Current action being performed (feed, play, sleep)
+ * @param {Function} [props.onCatClick] - Callback when cat sprite is clicked
  */
-export function PetDisplay({ stats, currentAction = null }) {
+export function PetDisplay({ stats, currentAction = null, onCatClick }) {
   const mood = determineMood(stats);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [displayAction, setDisplayAction] = useState(currentAction);
@@ -84,8 +85,14 @@ export function PetDisplay({ stats, currentAction = null }) {
   const actionAnim = renderActionAnimation();
   const moodAnim = renderMoodAnimation();
 
+  const handleCatClick = () => {
+    if (onCatClick) {
+      onCatClick();
+    }
+  };
+
   return (
-    <div className="pet-display-wrapper">
+    <div className="pet-display-wrapper" onClick={handleCatClick} style={{ cursor: 'pointer' }}>
       {actionAnim && (
         <div
           className={`action-animation-container ${isTransitioning ? 'fade-out' : 'fade-in'}`}
