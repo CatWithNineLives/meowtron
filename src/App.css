@@ -108,6 +108,43 @@
   animation: fadeIn 1.5s ease-in-out;
 }
 
+.pet-display-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.action-animation-container,
+.mood-animation-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.action-animation-container.fade-in {
+  opacity: 1;
+}
+
+.action-animation-container.fade-out {
+  opacity: 0;
+}
+
+.mood-animation-container {
+  opacity: 0;
+}
+
+.mood-animation-container.fade-in {
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+
 .sprite-container {
   display: inline-block;
   image-rendering: pixelated;

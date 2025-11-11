@@ -10,6 +10,25 @@ export default function App() {
   const { stats, performAction, resetStats } = usePetStats();
   const currentMood = determineMood(stats);
   const [debugMood, setDebugMood] = useState('idle');
+  const [currentAction, setCurrentAction] = useState(null);
+
+  // Handle action with temporary animation display
+  const handleAction = (action) => {
+    performAction(action);
+    setCurrentAction(action);
+
+    // Calculate animation duration based on action
+    // Increased durations to allow animations to be more visible
+    const durations = {
+      feed: 2500, // Extended from 1.5s to 2.5s
+      play: 1200, // Extended from 0.4s to 1.2s
+      sleep: 1200, // Extended from 0.4s to 1.2s
+    };
+
+    setTimeout(() => {
+      setCurrentAction(null);
+    }, durations[action] || 1000);
+  };
 
   const moods = ['idle', 'happy', 'hungry', 'sleepy', 'angry'];
 
@@ -30,7 +49,7 @@ export default function App() {
       <h1 className="app-title">Meowtron</h1>
       <div className="game-frame">
         <div className="pet-section">
-          <PetDisplay stats={stats} />
+          <PetDisplay stats={stats} currentAction={currentAction} />
         </div>
 
         <div className="stats-section">
@@ -38,7 +57,7 @@ export default function App() {
         </div>
 
         <div className="actions-section">
-          <ActionButtons onAction={performAction} />
+          <ActionButtons onAction={handleAction} />
         </div>
 
         <div className="reset-section">

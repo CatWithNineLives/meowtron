@@ -1,16 +1,22 @@
-import { useSpriteAnimation } from '../../hooks/useSpriteAnimation';
-import fallbackCat from '../../assets/cats/sprites/cat-idle.png';
+import { useMultiSpriteAnimation } from '../../hooks/useMultiSpriteAnimation';
+import catTired from '../../assets/cats/sprites/sleepy/cat-tired.png';
+import catSleepy from '../../assets/cats/sprites/sleepy/cat-sleepy.png';
 
-// Placeholder: Replace with actual sleepy sprite sheet when available
-const SLEEPY_SPRITE_SHEET = fallbackCat;
-const FRAME_COUNT = 10; // Using idle sprite sheet (320px wide / 32px per frame = 10 frames)
 const GLOW_COLOR = '#B266FF'; // Purple
 
-export function CatSleepyAnimation({ frameCount = FRAME_COUNT, fps = 10 }) {
-  const { spriteStyle } = useSpriteAnimation({
-    spriteSheet: SLEEPY_SPRITE_SHEET,
-    frameCount,
+// Sprite sheet dimensions:
+// cat-sleepy.png: 256px wide / 32px per frame = 8 frames
+// cat-tired.png: 384px wide / 32px per frame = 12 frames
+// Order: Start with sleepy, then tired, then back to sleepy
+const SPRITE_SHEETS = [catSleepy, catTired];
+const FRAME_COUNTS = [8, 12];
+
+export function CatSleepyAnimation({ fps = 10 }) {
+  const { spriteStyle } = useMultiSpriteAnimation({
+    spriteSheets: SPRITE_SHEETS,
+    frameCounts: FRAME_COUNTS,
     fps,
+    random: false, // Cycle sequentially between sleepy and tired
   });
 
   return (
