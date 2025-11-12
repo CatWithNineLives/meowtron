@@ -78,15 +78,40 @@ export function calculateDecay(stats, timeElapsed, lastAction = null) {
 
   const multipliers = decayMultipliers[lastAction] || decayMultipliers.default;
 
+  // Count how many stats are at zero
+  const zeroStatsCount =
+    (stats.hunger === 0 ? 1 : 0) +
+    (stats.happiness === 0 ? 1 : 0) +
+    (stats.energy === 0 ? 1 : 0);
+
+  // If any two stats are at zero, the remaining stat decays 5x faster
+  const rapidDecayMultiplier = zeroStatsCount >= 2 ? 5.0 : 1.0;
+
+  // Apply rapid decay to the stat(s) that are NOT at zero
+  const hungerMultiplier =
+    stats.hunger === 0
+      ? multipliers.hunger
+      : multipliers.hunger * rapidDecayMultiplier;
+
+  const happinessMultiplier =
+    stats.happiness === 0
+      ? multipliers.happiness
+      : multipliers.happiness * rapidDecayMultiplier;
+
+  const energyMultiplier =
+    stats.energy === 0
+      ? multipliers.energy
+      : multipliers.energy * rapidDecayMultiplier;
+
   return {
     hunger: clamp(
-      stats.hunger - baseDecayRate * multipliers.hunger * timeElapsed
+      stats.hunger - baseDecayRate * hungerMultiplier * timeElapsed
     ),
     happiness: clamp(
-      stats.happiness - baseDecayRate * multipliers.happiness * timeElapsed
+      stats.happiness - baseDecayRate * happinessMultiplier * timeElapsed
     ),
     energy: clamp(
-      stats.energy - baseDecayRate * multipliers.energy * timeElapsed
+      stats.energy - baseDecayRate * energyMultiplier * timeElapsed
     ),
   };
 }
